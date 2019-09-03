@@ -30,7 +30,7 @@
                 <div class="control">
                   <input v-model="newActivity.title" class="input" type="text" placeholder="Read a Book">
                 </div>
-              </div>
+                </div>
               <div class="field">
                 <label class="label">Notes</label>
                 <div class="control">
@@ -66,7 +66,7 @@ import { fetchActivities } from '@/api'
 
 export default {
   name: 'app',
-  components: {ActivityItem},
+  components: { ActivityItem },
   data () {
     return {
       isFormDisplayed: false,
@@ -77,34 +77,30 @@ export default {
         title: '',
         notes: ''
       },
-      items: {1: {name: 'Filip'}, 2: {name: 'John'}},
-        user: {
-          name: 'Filip Jerga',
-          id: '-Aj34jknvncx98812',
-        },
-        activities: {},
-        categories: {
-          '1546969049': {text: 'books'},
-          '1546969225': {text: 'movies'}
-        }
+      items: { 1: { name: 'Filip' }, 2: { name: 'John' } },
+      user: {},
+      activities: {},
+      categories: {}
     }
   },
-  beforeCreate(){
+  beforeCreate () {
     console.log('beforeCreate Called!')
   },
-  created(){
-    console.log('created Called!')
+  created () {
+    this.activities = fetchActivities()
+    this.categories = fetchCategories()
+    this.user = fetchUser()
   },
-  beforeMount(){
+  beforeMount () {
     console.log('beforeMount Called!')
   },
-  beforeUpdate(){
+  beforeUpdate () {
     console.log('beforeUpdate Called!')
   },
-  beforeDestroy(){
+  beforeDestroy () {
     console.log('beforeDestroy Called!')
   },
-  destroyed(){
+  destroyed () {
     console.log('destroyed Called!')
   },
   methods: {
@@ -123,13 +119,13 @@ export default {
 
 <style>
 #activityApp {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;	  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;	  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;	  -moz-osx-font-smoothing: grayscale;
-  text-align: center;	
-  color: #2c3e50;	  color: #2c3e50;
-  margin-top: 60px;	
-}	
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
  html,body {
   font-family: 'Open Sans', serif;
   background: #F2F6FA;
