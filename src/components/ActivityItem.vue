@@ -39,6 +39,6 @@ export default {
 
 <style scoped>
 .post{
-     text-align: left;
+     text-align: right;
 }
  </style>
