@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div id="activityApp">
     <h1>New Vue Activity App</h1>	    <nav class="navbar is-white topNav">
@@ -11,9 +12,21 @@
       <div class="container">
         <div class="navbar-menu">
           <div class="navbar-start">
-            <a class="navbar-item is-active" href="#">Newest</a>
-            <a class="navbar-item" href="#">In Progress</a>
-            <a class="navbar-item" href="#">Finished</a>
+            <a  
+                class="navbar-item is-active" 
+                href="#">
+                Newest
+            </a>
+            <a  
+                class="navbar-item" 
+                href="#">
+                In Progress
+            </a>
+            <a  
+                class="navbar-item" 
+                href="#">
+                Finished
+            </a>
           </div>
         </div>
       </div>
@@ -21,28 +34,51 @@
     <section class="container">
       <div class="columns">
         <div class="column is-3">
-          <a v-if="!isFormDisplayed" @click="toggleFormDisplay" class="button is-primary is-block is-alt is-large" href="#">New Activity</a>
-          <div v-if="isFormDisplayed" class="create-form">
+          <a  
+              v-if="!isFormDisplayed" 
+              href="#"
+              class="button is-primary is-block is-alt is-large"
+              @click="toggleFormDisplay">
+              New Activity
+          </a>
+          <div 
+                v-if="isFormDisplayed" 
+                class="create-form">
             <h2>Create Activity</h2>
             <form>
               <div class="field">
                 <label class="label">Title</label>
                 <div class="control">
-                  <input v-model="newActivity.title" class="input" type="text" placeholder="Read a Book">
+                  <input 
+                        v-model="newActivity.title" 
+                        class="input" 
+                        type="text" 
+                        placeholder="Read a Book">
                 </div>
                 </div>
               <div class="field">
                 <label class="label">Notes</label>
                 <div class="control">
-                  <textarea v-model="newActivity.notes" class="textarea" placeholder="Write some notes here"></textarea>
+                  <textarea 
+                            v-model="newActivity.notes" 
+                            class="textarea" 
+                            placeholder="Write some notes here" />
                 </div>
               </div>
               <div class="field is-grouped">
                 <div class="control">
-                  <button @click="createActivity" class="button is-link">Create Activity</button>
+                  <button 
+                          class="button is-link"
+                          @click="createActivity">
+                          Create Activity
+                  </button>
                 </div>
                 <div class="control">
-                  <button class="button is-text" @click="toggleFormDisplay">Cancel</button>
+                  <button 
+                          class="button is-text" 
+                          @click="toggleFormDisplay">
+                          Cancel
+                  </button>
                 </div>
               </div>
             </form>
@@ -50,9 +86,10 @@
         </div>
         <div class="column is-9">
           <div class="box content">
-            <ActivityItem v-for="activity in activities"
-                           :activity="activity"
-                           :key="activity.id"></ActivityItem>
+            <ActivityItem 
+                          v-for="activity in activities"
+                          :key="activity.id"
+                          :activity="activity" />
           </div>
         </div>
       </div>
@@ -62,10 +99,10 @@
 
 <script>
 import ActivityItem from '@/components/ActivityItem'
-import { fetchActivities } from '@/api'
+import { fetchActivities, fetchCategories, fetchUser } from '@/api'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: { ActivityItem },
   data () {
     return {
@@ -90,6 +127,10 @@ export default {
     this.activities = fetchActivities()
     this.categories = fetchCategories()
     this.user = fetchUser()
+
+    console.log(this.activities)
+    console.log(this.categories)
+    console.log(this.user)
   },
   beforeMount () {
     console.log('beforeMount Called!')
