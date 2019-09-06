@@ -10,6 +10,7 @@ module.exports = {
     'no-console': 0,
     'vue/html-indent': 0,
     'vue/html-closing-bracket-newline': 0,
-    'vue/singleline-html-element-content-newline': 0
+    'vue/singleline-html-element-content-newline': 0,
+    'vue/v-bind-style': 0
   }
 }

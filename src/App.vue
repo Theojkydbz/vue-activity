@@ -4,7 +4,7 @@
     <h1>New Vue Activity App</h1>	    <nav class="navbar is-white topNav">
       <div class="container">
         <div class="navbar-brand">
-          <h1>Activity Planner</h1>
+          <h1>{{ fullAppName }}</h1>
         </div>
       </div>
     </nav>
@@ -69,6 +69,7 @@
                 <div class="control">
                   <button 
                           class="button is-link"
+                          :disabled="!isFormValid"
                           @click="createActivity">
                           Create Activity
                   </button>
@@ -107,9 +108,8 @@ export default {
   data () {
     return {
       isFormDisplayed: false,
-      message: 'Hello Vue!',
-      titleMessage: 'Title Message Vue!!!!!',
-      isTextDisplayed: true,
+      creator: 'Théo Geiller',
+      appName: 'Activity Planner',
       newActivity: {
         title: '',
         notes: ''
@@ -120,6 +120,14 @@ export default {
       categories: {}
     }
   },
+  computed: {
+    isFormValid() {
+      return this.newActivity.title && this.newActivity.notes
+    },
+    fullAppName() {
+      return `${this.appName} by ${this.creator}`
+    }
+  },
   beforeCreate () {
     console.log('beforeCreate Called!')
   },
@@ -127,10 +135,6 @@ export default {
     this.activities = fetchActivities()
     this.categories = fetchCategories()
     this.user = fetchUser()
-
-    console.log(this.activities)
-    console.log(this.categories)
-    console.log(this.user)
   },
   beforeMount () {
     console.log('beforeMount Called!')
@@ -145,13 +149,11 @@ export default {
     console.log('destroyed Called!')
   },
   methods: {
-    toggleTextDisplay () {
-      this.isTextDisplayed = !this.isTextDisplayed
-    },
     toggleFormDisplay () {
       this.isFormDisplayed = !this.isFormDisplayed
     },
     createActivity () {
+      console.log(this.newActivity)
     }
   }
 }
