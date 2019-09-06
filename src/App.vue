@@ -5,6 +5,7 @@
       <div class="container">
         <div class="navbar-brand">
           <h1>{{ fullAppName }}</h1>
+          <!-- <h1>{{ watchedAppName }}</h1> -->
         </div>
       </div>
     </nav>
@@ -65,6 +66,23 @@
                             placeholder="Write some notes here" />
                 </div>
               </div>
+              <div class="field">
+                <label class="label">Notes</label>
+                <div class="control">
+                  <select 
+                    v-model="newActivity.category" 
+                    class="select"> 
+                    <option 
+                      disabled 
+                      value="">
+                      Please select one
+                    </option>
+                    <option v-for="category in categories">
+                      {{ category.text }}
+                    </option>
+                  </select>
+                </div>
+              </div>
               <div class="field is-grouped">
                 <div class="control">
                   <button 
@@ -91,6 +109,8 @@
                           v-for="activity in activities"
                           :key="activity.id"
                           :activity="activity" />
+            <div class="activity-length"> Currently {{ activityLength }} activities</div>
+            <div class="activity-motivation">{{ activityMotivation }}</div>
           </div>
         </div>
       </div>
@@ -101,6 +121,7 @@
 <script>
 import ActivityItem from '@/components/ActivityItem'
 import { fetchActivities, fetchCategories, fetchUser } from '@/api'
+import { debug } from 'util';
 
 export default {
   name: 'App',
@@ -110,9 +131,11 @@ export default {
       isFormDisplayed: false,
       creator: 'Théo Geiller',
       appName: 'Activity Planner',
+      watchedAppName: 'Activity Planner by Théo Geiller',
       newActivity: {
         title: '',
-        notes: ''
+        notes: '',
+        category: ''
       },
       items: { 1: { name: 'Filip' }, 2: { name: 'John' } },
       user: {},
@@ -121,11 +144,26 @@ export default {
     }
   },
   computed: {
-    isFormValid() {
+    isFormValid () {
       return this.newActivity.title && this.newActivity.notes
     },
-    fullAppName() {
+    fullAppName () {
       return `${this.appName} by ${this.creator}`
+    },
+    activityLength () {
+      const activitiesKeyArray = Object.keys(this.activities)
+      const activityLength = activitiesKeyArray.length
+
+      return activityLength
+    },
+    activityMotivation () {
+      if (this.activityLength && this.activityLength < 5) {
+        return 'Nice to see some activities'
+      } else if (this.activityLength >= 5){
+        return 'So many activities! Good job!'
+      } else {
+        return 'No activitie, so sad'
+      }
     }
   },
   beforeCreate () {
@@ -176,6 +214,12 @@ export default {
 footer {
   background-color: #F2F6FA !important;
 }
+.activity-motivation{
+  float: right;
+}
+.activity-length{
+  display: inline-block
+}
  .example-wrapper {
   margin-left: 30px;
 }
@@ -187,6 +231,7 @@ footer {
 }
 .container .columns {
   margin: 3rem 0;
+  text-align: left;
 }
 .navbar-menu .navbar-item {
   padding: 0 2rem;
