@@ -77,7 +77,9 @@
                       value="">
                       Please select one
                     </option>
-                    <option v-for="category in categories">
+                    <option
+                      v-for="category in categories"
+                      value="category.id">
                       {{ category.text }}
                     </option>
                   </select>
