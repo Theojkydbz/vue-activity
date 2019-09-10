@@ -3,7 +3,7 @@
   <div id="activityApp">
     <h1>New Vue Activity App</h1>	    
     
-    <NavBar />
+    <TheNavbar />
     <section class="container">
       <div class="columns">
         <div class="column is-3">
@@ -26,7 +26,8 @@
               <ActivityItem 
                 v-for="activity in activities"
                 :key="activity.id"
-                :activity="activity" 
+                :activity="activity"
+                :categories="categories"
               />
             </div>
             <div v-if="!isFetching">
@@ -51,18 +52,15 @@ import Vue from 'vue'
 
 import ActivityItem from '@/components/ActivityItem'
 import ActivityCreate from '@/components/ActivityCreate'
-import NavBar from '@/components/NavBar'
+import TheNavbar from '@/components/TheNavbar'
 import { fetchActivities, fetchCategories, fetchUser } from '@/api'
 import { debug } from 'util';
 
 export default {
   name: 'App',
-  components: { ActivityItem, ActivityCreate, NavBar },
+  components: { ActivityItem, ActivityCreate, TheNavbar },
   data () {
     return {
-      creator: 'Théo Geiller',
-      appName: 'Activity Planner',
-      watchedAppName: 'Activity Planner by Théo Geiller',
       isFetching: false,
       error: null,
       user: {},
@@ -71,9 +69,6 @@ export default {
     }
   },
   computed: {
-    fullAppName () {
-      return `${this.appName} by ${this.creator}`
-    },
     activityLength () {
       const activitiesKeyArray = Object.keys(this.activities)
       const activityLength = activitiesKeyArray.length

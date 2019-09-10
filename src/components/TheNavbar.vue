@@ -1,5 +1,5 @@
 <template>
-    <div class="NavBar">
+    <div class="TheNavbar">
         <nav class="navbar is-white topNav">
             <div class="container">
                 <div class="navbar-brand">
@@ -36,7 +36,17 @@
 
 <script>
 export default {
-
+    data () {
+        return {
+            creator: 'Théo Geiller',
+            appName: 'Activity Planner'
+        }
+    },
+    computed: {
+        fullAppName () {
+            return `${this.appName} by ${this.creator}`
+        },
+    }
 }
 </script>
 
