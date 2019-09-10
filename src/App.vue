@@ -1,6 +1,8 @@
 /* eslint-disable */
 <template>
-  <div id="activityApp">
+  <div 
+    v-if="isDataLoaded" 
+    id="activityApp">
     <h1>New Vue Activity App</h1>	    
     
     <TheNavbar />
@@ -28,6 +30,7 @@
                 :key="activity.id"
                 :activity="activity"
                 :categories="categories"
+                @activityDeleted="handleActivityDelete" 
               />
             </div>
             <div v-if="!isFetching">
@@ -64,8 +67,8 @@ export default {
       isFetching: false,
       error: null,
       user: {},
-      activities: {},
-      categories: {}
+      activities: null,
+      categories: null
     }
   },
   computed: {
@@ -83,6 +86,9 @@ export default {
       } else {
         return 'No activitie, so sad'
       }
+    },
+    isDataLoaded () {
+      return this.activities && this.categories
     }
   },
   beforeCreate () {
@@ -100,8 +106,11 @@ export default {
         this.isFetching = false
       })
 
-    this.categories = fetchCategories()
     this.user = fetchUser()
+    fetchCategories()
+      .then(categories =>{
+        this.categories = categories
+    })
   },
   beforeMount () {
     console.log('beforeMount Called!')
@@ -118,6 +127,9 @@ export default {
   methods: {
     addActivity (newActivity) {
         Vue.set(this.activities, newActivity.id, newActivity)
+    },
+    handleActivityDelete (activity) {
+      console.log(activity)
     }
   }
 }
