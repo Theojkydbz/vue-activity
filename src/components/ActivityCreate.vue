@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="field">
-                <label class="label">Notes</label>
+                <label class="label">Category</label>
                 <div class="control">
                 <select 
                     v-model="newActivity.category" 
@@ -55,7 +55,7 @@
                 <button 
                         class="button is-link"
                         :disabled="!isFormValid"
-                        @click="createActivity">
+                        @click.prevent="createActivity">
                         Create Activity
                 </button>
                 </div>
@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { createActivityAPI } from '@/api'
+
 export default {
     props: {
         categories: {
@@ -92,15 +94,29 @@ export default {
     },
     computed: {
         isFormValid () {
-            return this.newActivity.title && this.newActivity.notes && this.newActivity.category
+            return this.newActivity.title 
+                && this.newActivity.notes 
+                && this.newActivity.category
         }
     },
     methods:{
         toggleFormDisplay () {
             this.isFormDisplayed = !this.isFormDisplayed
+            
+        },
+        resetActivityForm () {
+            this.newActivity.title = ''
+            this.newActivity.notes = ''
+            this.newActivity.category = ''
         },
         createActivity () {
-            console.log(this.newActivity)
+            createActivityAPI({...this.newActivity})
+                .then(activity => {
+                    this.resetActivityForm()
+                    this.isFormDisplayed = false
+                    this.$emit('activityCreated', {...activity})
+                })
+            
         }
     }
     
