@@ -1,133 +1,47 @@
 <template>
-  <article class="post">
-    <div class="activity-title-wrapper">
-      <h4 class="activity-title">{{ activity.title }}</h4>
-      <i 
-        class="fas fa-cog activity-settings" 
-        @click="isMenuDisplayed = !isMenuDisplayed"
-      />
-    </div>
-    <p class="post-category">{{ textUtility_capitalize(categories[activity.category].text) }}</p>
-    <p class="post-notes">{{ activity.notes }}</p>
-    <div class="media">
-    <div class="media-left">
-        <p class="image is-32x32">
-        <img src="../assets/user.png">
-        </p>
-      </div>
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <a href="#">Filip Jerga</a> updated {{ activity.updatedAt | prettyTime }} &nbsp;
-          </p>
-        </div>
-      </div>
-      <div class="media-right">
-        <span>
-          Progress: 
-            <!-- <span 
-              :class="'color-' + ProgressColor"> 
-              {{ activity.progress }} %
-            </span> -->
-            <span 
-              :style="{'color': ProgressColor}"> 
-              {{ activity.progress }} %
-            </span> 
-        </span>
-      </div>
-    </div>
-    <div 
-      v-if="isMenuDisplayed" 
-      class="activity-controll">
-      <a class="button is-warning">
-        Edit
-      </a>
-      <a 
-        class="button is-danger" 
-        @click="deleteActivity">
-        Delete
-      </a>
-    </div>
-  </article>
+  <div class="ActivityItem">
+    <ActivityItemUpdate v-if="isUpdateActive" />
+    <ActivityItemDetail 
+      v-else
+      :activity="activity"
+      :categories="categories"
+      @toggleUpdate="changeUpdateState" />
+  </div>
 </template>
 
 <script>
-import textUtility from '@/mixins/textUtility'
+import ActivityItemDetail from './ActivityItemDetail'
+import ActivityItemUpdate from './ActivityItemUpdate'
 
 export default {
-  mixins: [textUtility],
-  props: {
-    categories:{
-      type: Object,
-      required: true
+  components:{
+    ActivityItemDetail,
+    ActivityItemUpdate
+  },
+  props:{
+    activity:{
+      required: true,
+      type: Object
     },
-    activity: {
-      type: Object,
-      required: true
+    categories:{
+      required: true,
+      type: Object
     }
   },
-  data(){
+  data() {
     return {
-      isMenuDisplayed: false
+      isUpdateActive: false
     }
   },
-  computed:{
-    ProgressColor () {
-      const progress = this.activity.progress
-      if( progress <= 0 ){
-        return 'red'
-      } else if( progress <= 50 ){
-        return 'orange'
-      } else {
-        return 'green'
-      }
-    }
-  },
-  methods:{
-    deleteActivity(){
-      this.isMenuDisplayed = false
-      this.$emit('activityDeleted', {...this.activity})
+  methods: {
+    changeUpdateState (isUpdate) {
+      this.isUpdateActive = isUpdate
     }
   }
+
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
-.activity-title {
-  margin-bottom: 5px;
-  display: inline-block;
-}
-.activity-settings {
-  float: right;
-  font-size: 22px;
-  &:hover {
-    cursor: pointer;
-  }
-}
-.activity-controll {
-  margin: 20px 0 0 0;
-  a {
-    margin-right: 5px;
-  }
-}
-
-.post-title{
-  margin-bottom: 5px
-}
-.post{
-     text-align: left;
-}
-
-/* .color-red {
-    color: red;
-}
-
-.color-orange {
-    color: orange;
-}
-
-.color-green {
-    color: green;
-} */
  </style>
