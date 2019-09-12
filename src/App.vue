@@ -30,7 +30,6 @@
                 :key="activity.id"
                 :activity="activity"
                 :categories="categories"
-                @activityDeleted="handleActivityDelete" 
               />
             </div>
             <div v-if="!isFetching">
@@ -52,23 +51,25 @@
 
 <script>
 import Vue from 'vue'
+import store from './store'
 
 import ActivityItem from '@/components/ActivityItem'
 import ActivityCreate from '@/components/ActivityCreate'
 import TheNavbar from '@/components/TheNavbar'
-import { fetchActivities, fetchCategories, fetchUser, deleteActivityAPI } from '@/api'
+// import { fetchActivities, fetchCategories, fetchUser, deleteActivityAPI } from '@/api'
 import { debug } from 'util';
 
 export default {
   name: 'App',
   components: { ActivityItem, ActivityCreate, TheNavbar },
   data () {
+    const { state: {activities, categories}} = store
     return {
       isFetching: false,
       error: null,
       user: {},
-      activities: null,
-      categories: null
+      activities: activities,
+      categories: categories
     }
   },
   computed: {
@@ -96,9 +97,8 @@ export default {
   },
   created () {
     this.isFetching = true
-    fetchActivities()
+    store.fetchActivities()
       .then(activities => {
-        this.activities = activities
         this.isFetching = false
       })
       .catch(err => {
@@ -106,10 +106,10 @@ export default {
         this.isFetching = false
       })
 
-    this.user = fetchUser()
-    fetchCategories()
+    this.user = store.fetchUser()
+
+    store.fetchCategories()
       .then(categories =>{
-        this.categories = categories
     })
   },
   beforeMount () {
@@ -127,13 +127,6 @@ export default {
   methods: {
     addActivity (newActivity) {
         Vue.set(this.activities, newActivity.id, newActivity)
-    },
-    handleActivityDelete (activity) {
-      debugger
-      deleteActivityAPI(activity)
-        .then(deletedActivity => {
-          Vue.delete(this.activities, deletedActivity.id)
-        })
     }
   }
 }
