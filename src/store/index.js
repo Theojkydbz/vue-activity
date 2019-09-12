@@ -58,13 +58,6 @@ const store = {
                 Vue.delete(this.state.activities, activity.id)
                 return deletedActivity
             })
-            // handleActivityDelete (activity) {
-            //   debugger
-            //   store.deleteActivityAPI(activity)
-            //     .then(deletedActivity => {
-            //       Vue.delete(this.activities, deletedActivity.id)
-            //     })
-            // }
     },
 
     setItem (ressource, id, item) {
