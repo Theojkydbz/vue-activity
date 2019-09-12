@@ -1,39 +1,48 @@
 <template>
-  <article class="post">
-    <h4 class='post-title'>{{ activity.title }}</h4>
-    <p class='post-notes'>{{ activity.notes }}</p>
-    <div class="media">
-    <div class="media-left">
-        <p class="image is-32x32">
-        <img src="../assets/user.png">
-        </p>
-      </div>
-
-
-
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <a href="#">Filip Jerga</a> updated {{activity.updatedAt}} minutes ago &nbsp;
-          </p>
-        </div>
-      </div>
-      <div class="media-right">
-        <span>Progress Bar Here</span>
-      </div>
-    </div>
-
-  </article>
+  <div class="ActivityItem">
+    <ActivityItemUpdate 
+      v-if="isUpdateActive"
+      :activity="activity"
+      :categories="categories"
+      @toggleUpdate="changeUpdateState" />
+    <ActivityItemDetail 
+      v-else
+      :activity="activity"
+      :categories="categories"
+      @toggleUpdate="changeUpdateState" />
+  </div>
 </template>
 
 <script>
+import ActivityItemDetail from './ActivityItemDetail'
+import ActivityItemUpdate from './ActivityItemUpdate'
+
 export default {
-  props: {
-    activity: {
-      type: Object,
-      required: true
+  components:{
+    ActivityItemDetail,
+    ActivityItemUpdate
+  },
+  props:{
+    activity:{
+      required: true,
+      type: Object
+    },
+    categories:{
+      required: true,
+      type: Object
+    }
+  },
+  data() {
+    return {
+      isUpdateActive: false
+    }
+  },
+  methods: {
+    changeUpdateState (isUpdate) {
+      this.isUpdateActive = isUpdate
     }
   }
+
 }
 </script>
 
@@ -41,4 +50,5 @@ export default {
 .post{
      text-align: right;
 }
+
  </style>

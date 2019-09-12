@@ -1,5 +1,9 @@
 # vue-activity
 
+
+https://theojkydbz.github.io/vue-activity/
+
+
 ## Project setup
 ```
 npm install
@@ -27,3 +31,7 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+Todo : Adding signature
+Todo : continue store build
