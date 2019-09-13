@@ -1,7 +1,7 @@
 import fakeApi from '@/lib/fakeApi'
 
 const generateUid = function(){ 
-  return Math.floor(new Date() * Math.random())
+  return Math.floor(new Date() * Math.random()) 
 }
 
 export const fetchActivities = () => {
