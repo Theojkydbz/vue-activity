@@ -34,4 +34,3 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 Todo : Adding signature
-Todo : continue store build
