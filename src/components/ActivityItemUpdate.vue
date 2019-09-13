@@ -2,13 +2,13 @@
     <article class="post">
         <div class="activity-title">
             <input 
-                v-model="activity.title"
+                v-model="modifiedActivity.title"
                 type="text" 
                 class="input">
         </div>
         <div class="activity-category">
             <select 
-                    v-model="activity.category"
+                    v-model="modifiedActivity.category"
                     class="select">
                 <option 
                     disabled 
@@ -26,7 +26,7 @@
         <div class="control activity-notes">
             <!-- TODO: Add v-model here -->
             <textarea
-                v-model="activity.notes"
+                v-model="modifiedActivity.notes"
                 class="textarea"
                 placeholder="Write some notes here" />
         </div>
@@ -39,7 +39,7 @@
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <a href="#">Filip Jerga</a> updated {{ activity.updatedAt | prettyTime }} &nbsp;
+                        <a href="#">Filip Jerga</a> updated {{ modifiedActivity.updatedAt | prettyTime }} &nbsp;
                     </p>
                 </div>
             </div>
@@ -47,14 +47,14 @@
                 <!-- TODO: Add v-model here -->
                 <input 
                     id="progress"
-                    v-model="activity.progress"
+                    v-model.number="modifiedActivity.progress"
                     type="range"
                     name="progress"
                     min="0" 
                     max="100" 
                     value="0"
                     step="10">
-                <label for="progress"> Progress</label>
+                <label for="progress"> {{ modifiedActivity.progress }}</label>
             </div>
         </div>
         <div 
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+    import store from '@/store'
     import textUtility from '@/mixins/textUtility'
 
     export default {
@@ -90,14 +91,17 @@
             }
         },
         data(){
-            return {
-            isMenuDisplayed: true
+                return {
+                isMenuDisplayed: true,
+                modifiedActivity: {...this.activity}
             }
         },
         methods:{
             updateActivity(){
-                this.$emit('toggleUpdate', false)
-                this.$emit('activityUpdated', {...this.activity})
+                store.updateActivity(this.modifiedActivity)
+                    .then(() => {
+                        this.$emit('toggleUpdate', false)
+                    })
             }
         }
     }
@@ -142,6 +146,6 @@
         margin-bottom: 5px
         }
         .post{
-            text-align: left;
+        text-align: left;
     }
 </style>>

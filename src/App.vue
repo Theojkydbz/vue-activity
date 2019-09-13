@@ -1,17 +1,15 @@
 /* eslint-disable */
 <template>
   <div 
-    v-if="isDataLoaded" 
     id="activityApp">
     <h1>New Vue Activity App</h1>	    
     
-    <TheNavbar />
+    <TheNavbar @filterSelected="setFilter" />
     <section class="container">
       <div class="columns">
         <div class="column is-3">
          <ActivityCreate
-            :categories="categories"
-            @activityCreated="addActivity" 
+            :categories="categories" 
           />
         </div>
         <div class="column is-9">
@@ -25,12 +23,15 @@
               <div v-if="isFetching">
                 Loading...
               </div>
-              <ActivityItem 
-                v-for="activity in activities"
-                :key="activity.id"
-                :activity="activity"
-                :categories="categories"
-              />
+              <div 
+                v-if="isDataLoaded">
+                <ActivityItem 
+                  v-for="activity in filteredActivities"
+                  :key="activity.id"
+                  :activity="activity"
+                  :categories="categories"
+                />
+              </div>
             </div>
             <div v-if="!isFetching">
               <div  
@@ -57,7 +58,7 @@ import ActivityItem from '@/components/ActivityItem'
 import ActivityCreate from '@/components/ActivityCreate'
 import TheNavbar from '@/components/TheNavbar'
 // import { fetchActivities, fetchCategories, fetchUser, deleteActivityAPI } from '@/api'
-import { debug } from 'util';
+import fakeApi from '@/lib/fakeApi'
 
 export default {
   name: 'App',
@@ -69,10 +70,31 @@ export default {
       error: null,
       user: {},
       activities: activities,
-      categories: categories
+      categories: categories,
+      filter: 'all'
     }
   },
   computed: {
+    filteredActivities () {
+      let filteredActivities = {}
+      let condition
+      if(this.filter === 'all'){
+        return this.activities
+      }
+      if (this.filter === 'inprogress') {
+        condition = (value) => value > 0 && value < 100
+      } else if (this.filter === 'finished'){
+        condition = (value) => value === 100
+      } else {
+        condition = (value) => value === 0
+      }
+      filteredActivities = Object.values(this.activities)
+          .filter(activity => {
+            return condition(activity.progress)
+          })
+
+      return filteredActivities
+    },
     activityLength () {
       const activitiesKeyArray = Object.keys(this.activities)
       const activityLength = activitiesKeyArray.length
@@ -88,14 +110,23 @@ export default {
         return 'No activitie, so sad'
       }
     },
+    activitiesLength () {
+      return Object.keys(this.activities).length
+    },
+    categoriesLength () {
+      return Object.keys(this.categories).length
+    },
     isDataLoaded () {
-      return this.activities && this.categories
+      return this.activitiesLength && this.categoriesLength
     }
   },
   beforeCreate () {
     console.log('beforeCreate Called!')
   },
   created () {
+    // for run only 1timz ep104
+    // fakeApi.fillDB()
+    
     this.isFetching = true
     store.fetchActivities()
       .then(activities => {
@@ -124,9 +155,9 @@ export default {
   destroyed () {
     console.log('destroyed Called!')
   },
-  methods: {
-    addActivity (newActivity) {
-        Vue.set(this.activities, newActivity.id, newActivity)
+  methods:{
+    setFilter (filterOption) {
+      this.filter = filterOption
     }
   }
 }

@@ -15,7 +15,7 @@ const store = {
             .then( activities => {
                 const keys = Object.keys(activities)
                 Object.keys(activities).forEach((key) => {
-                    this.setItem('activities', key, activities)
+                    this.setItem('activities', key, activities[key])
                 })
 
                 return activities
@@ -27,7 +27,7 @@ const store = {
             .then( categories => {
                 
                 Object.keys(categories).forEach((key) => {
-                    this.setItem('categories', key, categories)
+                    this.setItem('categories', key, categories[key])
                 })
                 
                 return categories
@@ -49,6 +49,20 @@ const store = {
     
     
         return fakeApi.post('activities', activity)
+            .then(createdActivity => {
+                this.setItem('activities', createdActivity.id, createdActivity)
+                return createdActivity
+            })
+    },
+
+    updateActivity (activity) {
+        activity.updatedAt = new Date()
+
+        return fakeApi.post('activities', activity)
+            .then(updatedActivity => {
+                this.setItem('activities', updatedActivity.id, updatedActivity)
+                return updatedActivity
+            })
     },
     
     
@@ -61,7 +75,7 @@ const store = {
     },
 
     setItem (ressource, id, item) {
-        Vue.set(this.state[ressource], id, item[id])
+        Vue.set(this.state[ressource], id, item)
     }
 }
 
