@@ -47,8 +47,6 @@ export default {
 </script>
 
 <style scoped>
-.post{
-     text-align: right;
-}
+
 
  </style>
