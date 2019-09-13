@@ -1,4 +1,4 @@
-# vue-activity
+# vue-activity project
 
 
 https://theojkydbz.github.io/vue-activity/
@@ -32,5 +32,7 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-Todo : UI Review \n
+Todo : UI Review
 Todo : Adding signature
+
+thanks to [Filip jerga](https://github.com/Jerga99) course
