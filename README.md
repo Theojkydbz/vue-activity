@@ -32,7 +32,6 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-Todo : UI Review
 Todo : Adding signature
 
 thanks to [Filip jerga](https://github.com/Jerga99) course
